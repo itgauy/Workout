@@ -25,7 +25,6 @@ const getWorkout = async (_req, _res) => {
   _res.status(200).json(workout)
 }
 
-
 // CREATE a new workout
 const createWorkout = async (_req, _res) => {
   const { title, reps, load } = _req.body
@@ -40,13 +39,47 @@ const createWorkout = async (_req, _res) => {
 }
 
 // DELETE a workout
+const deleteWorkout = async (_req, _res) => {
+  const { id } = _req.params
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return _res.status(404).json({ error: 'No such workout' })
+  }
+
+  const workout = await Workout.findOneAndDelete({ _id: id })
+
+  if (!workout) {
+    return _res.status(404).json({ error: 'No such workout' })
+  }
+
+  _res.status(200).json(workout)
+}
 
 
 // UPDATE a workout
+const updateWorkout = async (_req, _res) => {
+  const { id } = _req.params
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return _res.status(404).json({ error: 'No such workout' })
+  }
+
+  const workout = await Workout.findOneAndUpdate({ _id: id }, {
+    ..._req.body
+  })
+
+  if (!workout) {
+    return _res.status(404).json({ error: 'No such workout' })
+  }
+
+  _res.status(200).json(workout)
+}
 
 
 module.exports = {
   getWorkouts,
   getWorkout,
-  createWorkout
+  createWorkout,
+  deleteWorkout,
+  updateWorkout
 }
