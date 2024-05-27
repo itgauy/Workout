@@ -10,7 +10,7 @@ const Home = () => {
   const { workouts, dispatch } = useWorkoutsContext()
 
   useEffect(() => {
-    const fetchWorkout = async () => {
+    const fetchWorkouts = async () => {
       const response = await fetch('/api/workouts')
       const json = await response.json()
 
@@ -19,9 +19,8 @@ const Home = () => {
         dispatch({ type: 'SET_WORKOUTS', payload: json })
       }
     }
-
-    fetchWorkout()
-  }, [])
+    fetchWorkouts()
+  }, [dispatch])
 
   return (
     <div className="home">
